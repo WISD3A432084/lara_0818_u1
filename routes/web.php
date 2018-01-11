@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use App\Http\Middleware\CheckAge;
 
 Route::get('/', function () {
@@ -25,3 +26,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('mail', 'MailController@getSend');
+
+Route::group(['prefix' => 'login/social','middleware'=>['guest']], function () {
+    Route::get('{provider}/redirect', 'Auth\loginController@redirectToProvider')->name('social.redirect');
+    Route::get('{provider}/callback', 'Auth\loginController@handleProviderCallback')->name('social.callback');
+});
